@@ -16,12 +16,16 @@ import android.os.Build;
 import android.os.Handler;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
+import android.util.Log;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
@@ -140,8 +144,9 @@ public class MaterialShowcaseView extends FrameLayout implements View.OnTouchLis
 
         mSkipButton = contentView.findViewById(R.id.tv_skip);
         mSkipButton.setOnClickListener(this);
-    }
 
+    }
+    private static final String TAG = MaterialShowcaseView.class.getSimpleName();
 
     /**
      * Interesting drawing stuff.
@@ -160,6 +165,7 @@ public class MaterialShowcaseView extends FrameLayout implements View.OnTouchLis
         // get current dimensions
         final int width = getMeasuredWidth();
         final int height = getMeasuredHeight();
+        Log.e("TAG","remeasured height:" + height);
 
         // don't bother drawing if there is nothing to draw on
         if (width <= 0 || height <= 0) return;
@@ -233,8 +239,6 @@ public class MaterialShowcaseView extends FrameLayout implements View.OnTouchLis
 
 
     private void notifyOnDisplayed() {
-
-
         if (mListeners != null) {
             for (IShowcaseListener listener : mListeners) {
                 listener.onShowcaseDisplayed(this);
@@ -308,10 +312,8 @@ public class MaterialShowcaseView extends FrameLayout implements View.OnTouchLis
              * If we're on lollipop then make sure we don't draw over the nav bar
              */
             if (!mRenderOverNav && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-
-
                 mBottomMargin = getSoftButtonsBarSizePort();
-
+                //mBottomMargin = 0;
 
                 FrameLayout.LayoutParams contentLP = (LayoutParams) getLayoutParams();
 
@@ -326,6 +328,7 @@ public class MaterialShowcaseView extends FrameLayout implements View.OnTouchLis
 
             // now figure out whether to put content above or below it
             int height = getMeasuredHeight();
+            Log.e(TAG, "height: " + height);
             int midPoint = height / 2;
             int yPos = targetPoint.y;
 
@@ -1092,12 +1095,12 @@ public class MaterialShowcaseView extends FrameLayout implements View.OnTouchLis
 
 
     public int getSoftButtonsBarSizePort() {
-
+        int configShowNavigationBarId = getResources().getIdentifier("config_showNavigationBar", "bool", "android");
+        boolean isShowNavigationBar = configShowNavigationBarId > 0 && getResources().getBoolean(configShowNavigationBarId);
         int resourceId = getResources().getIdentifier("navigation_bar_height", "dimen", "android");
-        if (resourceId > 0) {
+        if (isShowNavigationBar && resourceId > 0) {
             return getResources().getDimensionPixelSize(resourceId);
         }
-
         return 0;
 
     }
