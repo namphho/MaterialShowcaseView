@@ -7,6 +7,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
+import uk.co.deanwild.materialshowcaseview.MaterialShowcaseViewWithImage;
 import uk.co.deanwild.materialshowcaseview.shape.OvalShape;
 
 
@@ -47,12 +48,12 @@ public class SimpleSingleExample extends AppCompatActivity implements View.OnCli
     }
 
     private void presentShowcaseView(int withDelay) {
-        new MaterialShowcaseView.Builder(this)
+        new MaterialShowcaseViewWithImage.Builder(this)
                 .setTarget(mButtonShow)
                 .setShape(new OvalShape())
                 .setTitleText("Hello")
                 .setDismissText("GOT IT")
-                .setContentText("This is some amazing feature you should know about")
+                .setContentImage(R.drawable.bg_text_image)
                 .setDelay(withDelay) // optional but starting animations immediately in onCreate can make them choppy
                 .singleUse(SHOWCASE_ID) // provide a unique ID used to ensure it is only shown once
 //                .useFadeAnimation() // remove comment if you want to use fade animations for Lollipop & up

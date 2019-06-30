@@ -209,4 +209,8 @@ public class MaterialShowcaseSequence implements IDetachedListener {
         void onDismiss(MaterialShowcaseView itemView, int position);
     }
 
+    @Override
+    public void onShowcaseDetached(MaterialShowcaseViewWithImage showcaseView, boolean wasDismissed, boolean wasSkipped) {
+        //todo
+    }
 }
